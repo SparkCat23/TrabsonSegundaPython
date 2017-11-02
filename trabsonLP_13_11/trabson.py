@@ -8,11 +8,23 @@ class Pessoa():
     def __str__(self):
         return str(self.nome)
     def altera_celular(self,cel):
-        self.celular = cel
+        if type(cel) == str:
+            self.celular = cel
+            return True
+        else:
+            return False
     def altera_email(self,email):
-        self.email = email
+        if type(email) == str:
+            self.email = email
+            return True
+        else:
+            return False
     def altera_nome(self,nome):
-        self.nome = nome
+        if type(nome) == str:
+            self.nome = nome
+            return True
+        else:
+            return False
     def retorna_celular(self,cel):
         return self.celular
     def retorna_email(self,email):
@@ -22,14 +34,22 @@ class Pessoa():
 
 class Usuario():
     def __init__(self,ra,senha):
-    	self.ra = ra
-    	self.senha = senha
-
+        self.ra = ra
+        self.senha = senha
+    
     def altera_ra(self,ra):
-    	self.ra = ra
+        if type(ra) == str:
+            self.ra = ra
+            return True
+        else:
+            return False
         
     def altera_senha(self,senha):
-    	self.senha = senha
+        if type(senha) == str:
+            self.senha = senha
+            return True
+        else:
+            return False
         
     def retorna_ra(self,ra):
     	return self.ra
@@ -80,24 +100,71 @@ class Aluno(Pessoa,Usuario):
             print("-- Matricula Não Existe --")
             return False
 		
-    def cancelar_matricula(self,disciplina):
-	    pass
+    def cancelar_matricula(self,CancelDisciplina):
+	    # carregando nomes das disciplinas
+        disciplinasAluno = []
+        for d in self.matriculas:
+            disciplinasAluno.append(d.disciplina.nome)
+        # se a disciplina estiver na lista do aluno
+        if CancelDisciplina.disciplina.nome in disciplinasAluno:
+            for c in range(0,len(disciplinasAluno)):
+                if CancelDisciplina.disciplina.nome == disciplinasAluno[c]:
+                    # alteração da data de confirmação
+                    CancelDisciplina.data_cancelamento = date.today()
+                    print("-- Matrícula Cancelada --")
+                    return True
+        else:
+            print("-- Matricula Não Existe --")
+            return False
 	
 class Professor(Pessoa,Usuario):
-	def __init__(self,apelido):
-		self.apelido = apelido
-		
-	def adiciona_disciplina(self,disciplina):
-		Disciplina.__init__(nome,carga_horaria,teoria,pratica,ementa,competencias,habilidades,conteudo,bibliografia_basica,bibliografia_complementar)
-		
-	def remove_disciplina(self,disciplina):
-		pass
+    def __init__(self,nome,email,celular,ra,senha,apelido):
+        Pessoa.__init__(self,nome,email,celular)
+        Usuario.__init__(self,ra,senha)
+        self.apelido = apelido
+        self.disciplinasProf = []
 	
-	def disciplinas_professor(self):
-		return #lista de disciplinas do professor
-		
-	def carga_horaria_total(self):
-		return #Int com carga horária do professor
+    def adiciona_disciplina(self,addDisciplina):
+        # carregando nomes das disciplinas
+        discProf = []
+        for d in self.disciplinasProf:
+            discProf.append(d.nome)
+        # se a disciplina não estiver cadastrada ainda
+        if addDisciplina.nome not in discProf:
+            self.disciplinasProf.append(addDisciplina)
+            return True
+        else:
+            print("-- Disciplina já cadastrada --")
+            return False
+	
+    def remove_disciplina(self,delDisciplina):
+        # carregando nomes das disciplinas
+        discProf = []
+        for d in self.disciplinasProf:
+            discProf.append(d.disciplina.nome)
+        # se a disciplina estive cadastrada para o professor
+        if delDisciplina.disciplina.nome in discProf:
+            for x in range(0,len(discProf)):
+                if delDisciplina.disciplina.nome == discProf[x]:
+                    # alteração da data de confirmação
+                    discProf.remove(x)
+                    print("-- Disciplina Removida --")
+                    return True
+        else:
+            print("-- Disciplina não Ecziste --")
+            return False
+
+    def disciplinas_professor(self):
+        disciplinas=[]
+        for d in self.disciplinasProf:
+            disciplinas.append(d.nome)
+        return disciplinas
+	
+    def carga_horaria_total(self):
+        total = 0
+        for d in self.disciplinasProf:
+            total += d.carga_horaria
+        return total
 		
 class Matricula():
     def __init__(self,Aluno,Disciplina,data_matricula):
@@ -114,10 +181,18 @@ class Matricula():
         return mat
 
     def altera_aluno(self,aluno):
-	    self.aluno = aluno
+        if type(aluno) == Aluno:
+            self.aluno = aluno
+            return True
+        else:
+            return False
 	
     def altera_disciplina(self,disciplina):
-	    self.disciplina = disciplina
+        if type(disciplina) == Disciplina:
+            self.disciplina = disciplina
+            return True
+        else:
+            return False
     def retorna_aluno(self):
         return #nome do aluno
     def retorna_disciplina(self):
@@ -140,33 +215,89 @@ class Disciplina():
         return str(self.nome)
 
     def altera_nome(self,nome):
-        self.nome = nome
+        if type(nome) == str:
+            self.nome = nome
+            return True
+        else:
+            return False
+
     def	altera_carga_horaria(self,carga_horaria):
-        self.carga_horaria = carga_horaria
+        if type(carga_horaria) == int:
+            if carga_horaria <= 0:
+                print("-- Inserção Inválida! A carga horária não pode ser menor ou igual a ZERO --")
+                return False
+            else: 
+                self.carga_horaria = carga_horaria
+                print("-- Carga Horária Alterada --")
+                return True
+        else:
+            return False
 	
     def	altera_teoria(self,teoria):
-        self.teoria = teoria
+        if type(teoria) == int:
+            if teoria <= 0:
+                print("-- Inserção Inválida! A carga horária não pode ser menor ou igual a ZERO --")
+                return False
+            else: 
+                self.teoria = teoria
+                print("-- Carga Horária Alterada --")
+                return True
+        else:
+            return False
 	
-    def	altera_pratica(self,pratica):	
-        self.pratica = pratica
-
+    def	altera_pratica(self,pratica):
+        if type(pratica) == int:	
+            if pratica <= 0:
+                print("-- Inserção Inválida! A carga horária não pode ser menor ou igual a ZERO --")
+                return False
+            else: 
+                self.pratica = pratica
+                print("-- Carga Horária Alterada --")
+                return True
+        else:
+            return False
+        
     def	altera_ementa(self,ementa):
-        self.ementa = ementa
+        if type(ementa) == str:
+            self.ementa = ementa
+            return True
+        else:
+            return False
 
     def	altera_competencias(self,competencias):
-        self.competencias = competencias
+        if type(competencias) == str:
+            self.competencias = competencias
+            return True
+        else:
+            return False
 	
-    def	altera_pratica(self,habilidades):
-        self.habilidades = habilidades
+    def	altera_habilidades(self,habilidades):
+        if type(habilidades) == str:
+            self.habilidades
+            return True
+        else:
+            return False
 	
     def	altera_conteudo(self,conteudo):
-        self.conteudo = conteudo
+        if type(conteudo) == str:
+            self.conteudo = conteudo
+            return True
+        else:
+            return False
 
     def	altera_bibliografia_basica(self,bibliografia_basica):
-        self.bibliografia_basica = bibliografia_basica
+        if type(bibliografia_basica) == str:
+            self.bibliografia_basica = bibliografia_basica
+            return True
+        else:
+            return False
 	
     def	altera_bibliografia_complementar(self,bibliografia_complementar):
-        self.bibliografia_complementar = bibliografia_complementar
+        if type(bibliografia_complementar) == str:
+            self.bibliografia_complementar = bibliografia_complementar
+            return True
+        else:
+            return False
 
     def retorna_nome(self):
         return self.nome
