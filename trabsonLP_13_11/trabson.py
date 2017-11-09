@@ -5,31 +5,38 @@ class Pessoa():
     	self.nome = nome
     	self.email = email
     	self.celular = celular
+
     def __str__(self):
         return str(self.nome)
+
     def altera_celular(self,cel):
         if type(cel) == str:
             self.celular = cel
             return True
         else:
             return False
+
     def altera_email(self,email):
         if type(email) == str:
             self.email = email
             return True
         else:
             return False
+
     def altera_nome(self,nome):
         if type(nome) == str:
             self.nome = nome
             return True
         else:
             return False
-    def retorna_celular(self,cel):
+
+    def retorna_celular(self):
         return self.celular
-    def retorna_email(self,email):
+
+    def retorna_email(self):
         return self.email
-    def retorna_nome(self,nome):
+
+    def retorna_nome(self):
         return self.nome
 
 class Usuario():
@@ -51,10 +58,10 @@ class Usuario():
         else:
             return False
         
-    def retorna_ra(self,ra):
+    def retorna_ra(self):
     	return self.ra
 
-    def retorna_senha(self,senha):
+    def retorna_senha(self):
     	return self.senha
 
 class Aluno(Pessoa,Usuario):
@@ -109,7 +116,7 @@ class Aluno(Pessoa,Usuario):
         if CancelDisciplina.disciplina.nome in disciplinasAluno:
             for c in range(0,len(disciplinasAluno)):
                 if CancelDisciplina.disciplina.nome == disciplinasAluno[c]:
-                    # alteração da data de confirmação
+                    # alteração da data de cancelamento
                     CancelDisciplina.data_cancelamento = date.today()
                     print("-- Matrícula Cancelada --")
                     return True
@@ -176,6 +183,7 @@ class Matricula():
         self.data_matricula = date(y,m,d)
         self.data_confirmacao = None
         self.data_cancelamento = None
+
     def __str__(self):
         mat = str(self.aluno)+"--"+str(self.disciplina)+".\nData de Matrícula: "+str(self.data_matricula)
         return mat
@@ -194,9 +202,10 @@ class Matricula():
         else:
             return False
     def retorna_aluno(self):
-        return #nome do aluno
+        return self.aluno
+
     def retorna_disciplina(self):
-        return #nome da disciplina matriculada
+        return self.disciplina
 		
 class Disciplina():
     def __init__(self,nome,carga_horaria,teoria,pratica,ementa,competencias,habilidades,conteudo,bibliografia_basica,bibliografia_complementar):
